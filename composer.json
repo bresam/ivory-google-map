@@ -21,7 +21,7 @@
         "symfony/event-dispatcher": "^5.4 || ^6.2"
     },
     "require-dev": {
-        "ivory/serializer": "dev-master#99907d5",
+        "ivory/serializer": "dev-master#de27ada",
         "friendsofphp/php-cs-fixer": "^2.19 || ^3.14",
         "php-http/cache-plugin": "^1.7.5",
         "php-http/guzzle6-adapter": "^2.0",
