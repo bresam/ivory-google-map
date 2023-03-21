@@ -36,7 +36,10 @@ class VariableAwareTest extends TestCase
     public function testDefaultState()
     {
         $this->assertIsString($this->variableAware->getVariable());
-        $this->assertMatchesRegularExpression('/^variableawaremock[a-z0-9]*$/', $this->variableAware->getVariable());
+
+        if(method_exists($this, 'assertMatchesRegularExpression'))
+        {$this->assertMatchesRegularExpression('/^variableawaremock[a-z0-9]*$/', $this->variableAware->getVariable());}
+        else{$this->assertRegExp('/^variableawaremock[a-z0-9]*$/', $this->variableAware->getVariable());}
     }
 
     public function testVariable()
