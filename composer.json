@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "ivory/serializer": "dev-master#99907d5",
-        "friendsofphp/php-cs-fixer": "^3.14",
+        "friendsofphp/php-cs-fixer": "^2.19 || ^3.14",
         "php-http/cache-plugin": "^1.7.5",
         "php-http/guzzle6-adapter": "^2.0",
         "phpunit/phpunit": "^8.5 || ^9.6",
