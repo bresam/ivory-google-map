@@ -1,6 +1,6 @@
 {
     "name": "ivory/google-map",
-    "description": "Google Map API v3 integration for PHP ^7.0",
+    "description": "Google Map API v3 integration for PHP ^7.2",
     "keywords": [ "google", "map"],
     "license": "MIT",
     "authors": [
