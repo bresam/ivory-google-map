@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^7.2 || ^8.0",
-        "ivory/json-builder": "^3.0",
+        "ivory/json-builder": "dev-feature/symfony-6",
         "symfony/event-dispatcher": "^5.4 || ^6.2"
     },
     "require-dev": {
@@ -46,9 +46,13 @@
         "psr-4": { "Ivory\\Tests\\GoogleMap\\": "tests/" }
     },
     "repositories": {
-    "repo-ivory-serializer": {
-        "type": "vcs",
-        "url": "git@github.com:Chris53897/ivory-serializer.git"
-    }
+        "repo-ivory-serializer": {
+            "type": "vcs",
+            "url": "git@github.com:Chris53897/ivory-serializer.git"
+        },
+        "repo-ivory-json-builder": {
+            "type": "vcs",
+            "url": "git@github.com:Chris53897/ivory-json-builder.git"
+        }
     }
 }
