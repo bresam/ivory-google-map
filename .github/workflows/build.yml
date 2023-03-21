@@ -19,14 +19,14 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.2, 7.3, 7.4, 8.0]
+                php: [7.2, 7.3, 7.4, 8.0, 8.1, 8.2]
 
         env:
             APP_ENV: test
 
         steps:
             -
-                uses: actions/checkout@v2
+                uses: actions/checkout@v3
 
             -
                 name: Setup PHP
@@ -44,7 +44,7 @@ jobs:
 
             -
                 name: Cache Composer
-                uses: actions/cache@v2
+                uses: actions/cache@v3
                 with:
                     path: ${{ steps.composer-cache.outputs.dir }}
                     key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
