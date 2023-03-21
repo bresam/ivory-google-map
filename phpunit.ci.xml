@@ -1,24 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit colors="true" bootstrap="tests/autoload.php">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         colors="true"
+         bootstrap="tests/autoload.php"
+>
+    <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+    </php>
+
     <testsuites>
         <testsuite name="Ivory Google Map Test Suite">
             <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
+
     <php>
         <server name="BROWSER_NAME" value="chrome" />
         <server name="CACHE_PATH" value="tests/.cache" />
     </php>
+
     <filter>
         <whitelist>
             <directory suffix=".php">./src/</directory>
         </whitelist>
     </filter>
+
     <groups>
         <exclude>
             <!-- Temporarily disabled due to incorrect batch execution errors -->
             <group>functional</group>
         </exclude>
     </groups>
+
 </phpunit>

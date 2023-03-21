@@ -28,7 +28,7 @@ trait VariableAwareTrait
     {
         if (null === $this->variable) {
             $prefix = strtolower(substr(strrchr(get_class($this), '\\'), 1));
-            $this->variable = $prefix.substr_replace(uniqid(null, true), '', 14, 1);
+            $this->variable = $prefix.substr_replace(uniqid('', true), '', 14, 1);
         }
 
         return $this->variable;
