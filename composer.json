@@ -21,7 +21,7 @@
         "symfony/serializer": "^6.4 || ^7.0",
         "symfony/property-access": "^6.4 || ^7.0",
         "phpdocumentor/reflection-docblock": "^5.3",
-        "php-http/message-factory": "^1.1"
+        "nyholm/psr7": "^1.8"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.49",

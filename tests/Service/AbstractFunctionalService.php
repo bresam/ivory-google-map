@@ -17,10 +17,10 @@ use Http\Client\Common\Plugin\HistoryPlugin;
 use Http\Client\Common\Plugin\RetryPlugin;
 use Http\Client\Common\PluginClient;
 use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Http\Message\MessageFactory\GuzzleMessageFactory;
 use Ivory\GoogleMap\Service\Plugin\ErrorPlugin;
 use Ivory\Tests\GoogleMap\Service\Utility\Journal;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\RequestInterface;
@@ -42,7 +42,7 @@ abstract class AbstractFunctionalService extends TestCase
     protected $client;
 
     /**
-     * @var MessageFactory
+     * @var Psr17Factory
      */
     protected $messageFactory;
 

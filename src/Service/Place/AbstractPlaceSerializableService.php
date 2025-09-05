@@ -12,8 +12,8 @@
 namespace Ivory\GoogleMap\Service\Place;
 
 use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractSerializableService;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -26,7 +26,7 @@ abstract class AbstractPlaceSerializableService extends AbstractSerializableServ
      */
     public function __construct(
         HttpClient $client,
-        MessageFactory $messageFactory,
+        Psr17Factory $messageFactory,
         ?SerializerInterface $serializer = null,
         $context = null
     ) {

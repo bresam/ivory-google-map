@@ -16,6 +16,7 @@ use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractHttpService;
 use Ivory\GoogleMap\Service\AbstractSerializableService;
 use Ivory\GoogleMap\Service\BusinessAccount;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -41,7 +42,7 @@ class SerializableServiceTest extends TestCase
     private $client;
 
     /**
-     * @var MessageFactory|MockObject
+     * @var Psr17Factory|MockObject
      */
     private $messageFactory;
 
@@ -151,11 +152,11 @@ class SerializableServiceTest extends TestCase
     }
 
     /**
-     * @return MockObject|MessageFactory
+     * @return MockObject|Psr17Factory
      */
     private function createMessageFactoryMock()
     {
-        return $this->createMock(MessageFactory::class);
+        return $this->createMock(Psr17Factory::class);
     }
 
     /**

@@ -12,10 +12,10 @@
 namespace Ivory\GoogleMap\Service\Place\Detail;
 
 use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractSerializableService;
 use Ivory\GoogleMap\Service\Place\Detail\Request\PlaceDetailRequestInterface;
 use Ivory\GoogleMap\Service\Place\Detail\Response\PlaceDetailResponse;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -25,7 +25,7 @@ class PlaceDetailService extends AbstractSerializableService
 {
     public function __construct(
         HttpClient $client,
-        MessageFactory $messageFactory,
+        Psr17Factory $messageFactory,
         ?SerializerInterface $serializer = null
     ) {
         parent::__construct(

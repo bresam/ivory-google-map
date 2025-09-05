@@ -12,9 +12,9 @@
 namespace Ivory\Tests\GoogleMap\Service;
 
 use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractHttpService;
 use Ivory\GoogleMap\Service\AbstractService;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -39,7 +39,7 @@ class HttpServiceTest extends TestCase
     private $client;
 
     /**
-     * @var MessageFactory|MockObject
+     * @var Psr17Factory|MockObject
      */
     private $messageFactory;
 
@@ -88,10 +88,10 @@ class HttpServiceTest extends TestCase
     }
 
     /**
-     * @return MockObject|MessageFactory
+     * @return MockObject|Psr17Factory
      */
     private function createMessageFactoryMock()
     {
-        return $this->createMock(MessageFactory::class);
+        return $this->createMock(Psr17Factory::class);
     }
 }

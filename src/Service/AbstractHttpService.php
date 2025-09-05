@@ -12,7 +12,7 @@
 namespace Ivory\GoogleMap\Service;
 
 use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\RequestInterface as PsrRequestInterface;
 
 /**
@@ -21,9 +21,9 @@ use Psr\Http\Message\RequestInterface as PsrRequestInterface;
 abstract class AbstractHttpService extends AbstractService
 {
     private HttpClient $client;
-    private MessageFactory $messageFactory;
+    private Psr17Factory $messageFactory;
 
-    public function __construct(string $url, HttpClient $client, MessageFactory $messageFactory)
+    public function __construct(string $url, HttpClient $client, Psr17Factory $messageFactory)
     {
         parent::__construct($url);
 
@@ -47,7 +47,7 @@ abstract class AbstractHttpService extends AbstractService
     }
 
     /**
-     * @return MessageFactory
+     * @return Psr17Factory
      */
     public function getMessageFactory()
     {
@@ -56,7 +56,7 @@ abstract class AbstractHttpService extends AbstractService
     /**
      * @return void
      */
-    public function setMessageFactory(MessageFactory $messageFactory)
+    public function setMessageFactory(Psr17Factory $messageFactory)
     {
         $this->messageFactory = $messageFactory;
     }
