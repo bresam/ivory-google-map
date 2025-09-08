@@ -11,10 +11,11 @@
 
 namespace Ivory\GoogleMap\Service;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\Serializer\SerializerBuilder;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -29,11 +30,11 @@ abstract class AbstractSerializableService extends AbstractHttpService
 
     public function __construct(
         string $url,
-        HttpClient $client,
-        MessageFactory $messageFactory,
+        ClientInterface $client,
+        RequestFactoryInterface $requestFactory,
         ?SerializerInterface $serializer = null
     ) {
-        parent::__construct($url, $client, $messageFactory);
+        parent::__construct($url, $client, $requestFactory);
 
         $this->setSerializer($serializer ?: SerializerBuilder::create());
     }
@@ -68,6 +69,9 @@ abstract class AbstractSerializableService extends AbstractHttpService
         return parent::createBaseUrl($request).'/'.$this->format;
     }
 
+    /**
+     * @throws ExceptionInterface
+     */
     protected function deserialize(ResponseInterface $response, string $type, array $context = []): mixed
     {
         return $this->serializer->deserialize((string) $response->getBody(), $type, $this->format, $context);

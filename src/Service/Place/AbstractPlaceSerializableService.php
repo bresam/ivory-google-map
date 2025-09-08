@@ -11,9 +11,9 @@
 
 namespace Ivory\GoogleMap\Service\Place;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractSerializableService;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -25,8 +25,8 @@ abstract class AbstractPlaceSerializableService extends AbstractSerializableServ
      * @param string|null $context
      */
     public function __construct(
-        HttpClient $client,
-        MessageFactory $messageFactory,
+        ClientInterface $client,
+        RequestFactoryInterface $requestFactory,
         ?SerializerInterface $serializer = null,
         $context = null
     ) {
@@ -37,7 +37,7 @@ abstract class AbstractPlaceSerializableService extends AbstractSerializableServ
         parent::__construct(
             'https://maps.googleapis.com/maps/api/place'.$context,
             $client,
-            $messageFactory,
+            $requestFactory,
             $serializer
         );
     }

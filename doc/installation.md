@@ -18,18 +18,17 @@ composer require ivory/google-map
 
 ## Download additional libraries
 
-### Httplug
+### PSR-17 and PSR-18
 
-If you want to use a service (geocoder, direction, ...), you will need an http client and message factory via 
-[Httplug](http://httplug.io/) which is an http client abstraction library:
+If you want to use a service (geocoder, direction, ...), you will need an http client and request factory, this bundle is
+built around the [PSR-17](https://www.php-fig.org/psr/psr-17/) and [PSR-18](https://www.php-fig.org/psr/psr-18/) specifications.
+This means that any http client or request factory library which supports these specifications can be used within this bundle.
 
 ``` bash
-composer require php-http/guzzle7-adapter
-composer require php-http/message
+composer require symfony/http-client
 ```
 
-Here, I have chosen to use [Guzzle7](http://docs.guzzlephp.org/en/latest/psr7.html) but since Httplug supports the 
-most popular http clients, you can install your preferred one instead.
+Here, I have chosen to use [HttpClient](https://github.com/symfony/http-client).
 
 ### Ivory Serializer
 

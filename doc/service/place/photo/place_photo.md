@@ -19,7 +19,7 @@ $service = new PlacePhotoService();
 
 All services works the same way, so, if you want to learn more about it, you can read this common
 [documentation](/doc/service/service.md) about services except that the place photo service does not use an http client
-and message factory as it does not need to issue http requests.
+and request factory as it does not need to issue http requests.
 
 ## Request
 

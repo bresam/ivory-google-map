@@ -45,7 +45,7 @@ class ElevationServiceTest extends AbstractSerializableService
 
         parent::setUp();
 
-        $this->service = new ElevationService($this->client, $this->messageFactory);
+        $this->service = new ElevationService($this->client, $this->requestFactory);
         $this->service->setKey($_SERVER['API_KEY']);
     }
 

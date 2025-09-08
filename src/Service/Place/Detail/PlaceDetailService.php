@@ -11,11 +11,13 @@
 
 namespace Ivory\GoogleMap\Service\Place\Detail;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractSerializableService;
 use Ivory\GoogleMap\Service\Place\Detail\Request\PlaceDetailRequestInterface;
 use Ivory\GoogleMap\Service\Place\Detail\Response\PlaceDetailResponse;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -24,18 +26,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 class PlaceDetailService extends AbstractSerializableService
 {
     public function __construct(
-        HttpClient $client,
-        MessageFactory $messageFactory,
+        ClientInterface $client,
+        RequestFactoryInterface $requestFactory,
         ?SerializerInterface $serializer = null
     ) {
         parent::__construct(
             'https://maps.googleapis.com/maps/api/place/details',
             $client,
-            $messageFactory,
+            $requestFactory,
             $serializer
         );
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     * @throws ExceptionInterface
+     */
     public function process(PlaceDetailRequestInterface $request): PlaceDetailResponse
     {
         $httpRequest = $this->createRequest($request);

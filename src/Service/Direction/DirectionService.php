@@ -11,12 +11,13 @@
 
 namespace Ivory\GoogleMap\Service\Direction;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractSerializableService;
 use Ivory\GoogleMap\Service\Direction\Request\DirectionRequestInterface;
 use Ivory\GoogleMap\Service\Direction\Response\DirectionResponse;
 use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -25,15 +26,16 @@ use Symfony\Component\Serializer\SerializerInterface;
 class DirectionService extends AbstractSerializableService
 {
     public function __construct(
-        HttpClient $client,
-        MessageFactory $messageFactory,
+        ClientInterface $client,
+        RequestFactoryInterface $requestFactory,
         ?SerializerInterface $serializer = null
     ) {
-        parent::__construct('https://maps.googleapis.com/maps/api/directions', $client, $messageFactory, $serializer);
+        parent::__construct('https://maps.googleapis.com/maps/api/directions', $client, $requestFactory, $serializer);
     }
 
     /**
      * @throws ClientExceptionInterface
+     * @throws ExceptionInterface
      */
     public function route(DirectionRequestInterface $request): DirectionResponse
     {

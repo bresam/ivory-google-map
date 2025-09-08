@@ -11,11 +11,13 @@
 
 namespace Ivory\GoogleMap\Service\Geocoder;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractSerializableService;
 use Ivory\GoogleMap\Service\Geocoder\Request\GeocoderRequestInterface;
 use Ivory\GoogleMap\Service\Geocoder\Response\GeocoderResponse;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -24,18 +26,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 class GeocoderService extends AbstractSerializableService
 {
     public function __construct(
-        HttpClient $client,
-        MessageFactory $messageFactory,
+        ClientInterface $client,
+        RequestFactoryInterface $requestFactory,
         ?SerializerInterface $serializer = null
     ) {
         parent::__construct(
             'https://maps.googleapis.com/maps/api/geocode',
             $client,
-            $messageFactory,
+            $requestFactory,
             $serializer
         );
     }
 
+    /**
+     * @throws ClientExceptionInterface
+     * @throws ExceptionInterface
+     */
     public function geocode(GeocoderRequestInterface $request): GeocoderResponse
     {
         $httpRequest = $this->createRequest($request);

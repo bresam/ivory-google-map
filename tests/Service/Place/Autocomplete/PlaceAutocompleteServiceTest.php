@@ -47,7 +47,7 @@ class PlaceAutocompleteServiceTest extends AbstractPlaceSerializableService
 
         parent::setUp();
 
-        $this->service = new PlaceAutocompleteService($this->client, $this->messageFactory);
+        $this->service = new PlaceAutocompleteService($this->client, $this->requestFactory);
         $this->service->setKey($_SERVER['API_KEY']);
     }
 

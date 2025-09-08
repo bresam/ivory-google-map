@@ -45,7 +45,7 @@ class GeocoderServiceTest extends AbstractSerializableService
 
         parent::setUp();
 
-        $this->service = new GeocoderService($this->client, $this->messageFactory);
+        $this->service = new GeocoderService($this->client, $this->requestFactory);
         $this->service->setKey($_SERVER['API_KEY']);
     }
 

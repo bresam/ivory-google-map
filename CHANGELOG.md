@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 7.0.0 (xxx)
+
+ * [PSR-17](https://www.php-fig.org/psr/psr-17/) and [PSR-18](https://www.php-fig.org/psr/psr-18/) implementation
+
 ### 3.0.1 (2020-06-12)
 
  * fixed issue #1 Nullable return type declaration fails with php 7.0

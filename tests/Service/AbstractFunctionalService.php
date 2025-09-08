@@ -11,20 +11,21 @@
 
 namespace Ivory\Tests\GoogleMap\Service;
 
-use Http\Adapter\Guzzle7\Client;
 use Http\Client\Common\Plugin\ErrorPlugin as HttpErrorPlugin;
 use Http\Client\Common\Plugin\HistoryPlugin;
 use Http\Client\Common\Plugin\RetryPlugin;
 use Http\Client\Common\PluginClient;
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
-use Http\Message\MessageFactory\GuzzleMessageFactory;
 use Ivory\GoogleMap\Service\Plugin\ErrorPlugin;
 use Ivory\Tests\GoogleMap\Service\Utility\Journal;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Psr18Client;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
@@ -37,14 +38,14 @@ abstract class AbstractFunctionalService extends TestCase
     protected static $journal;
 
     /**
-     * @var HttpClient
+     * @var ClientInterface
      */
     protected $client;
 
     /**
-     * @var MessageFactory
+     * @var RequestFactoryInterface
      */
-    protected $messageFactory;
+    protected $requestFactory;
 
     /**
      * @var CacheItemPoolInterface
@@ -71,9 +72,9 @@ abstract class AbstractFunctionalService extends TestCase
         }
 
         $this->pool = new FilesystemAdapter('', 0, $_SERVER['CACHE_PATH']);
-        $this->messageFactory = new GuzzleMessageFactory();
+        $this->requestFactory = new Psr17Factory();
 
-        $this->client = new PluginClient(new Client(), [
+        $this->client = new PluginClient(new Psr18Client(new MockHttpClient()), [
             new RetryPlugin([
                 'retries'         => 5,
                 'exception_delay' => static function () {

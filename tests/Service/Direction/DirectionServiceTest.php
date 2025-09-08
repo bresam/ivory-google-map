@@ -56,7 +56,7 @@ class DirectionServiceTest extends AbstractSerializableService
 
         parent::setUp();
 
-        $this->service = new DirectionService($this->client, $this->messageFactory);
+        $this->service = new DirectionService($this->client, $this->requestFactory);
         $this->service->setKey($_SERVER['API_KEY']);
     }
 

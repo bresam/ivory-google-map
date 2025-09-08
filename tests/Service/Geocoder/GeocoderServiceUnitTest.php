@@ -36,7 +36,7 @@ class GeocoderServiceUnitTest extends AbstractUnitService
 
         $this->service = new GeocoderService(
             $this->client,
-            $this->messageFactory,
+            $this->requestFactory,
             $this->serializer
         );
     }
@@ -51,7 +51,7 @@ class GeocoderServiceUnitTest extends AbstractUnitService
 
         $url = 'https://maps.googleapis.com/maps/api/geocode/json?foo=bar&signature=signature';
 
-        $this->messageFactory
+        $this->requestFactory
             ->expects($this->once())
             ->method('createRequest')
             ->with(

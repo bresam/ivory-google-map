@@ -7,13 +7,15 @@ All services (direction, distance matrix, geocoder, ...) share common features.
 If you want to update the service http client, you can use:
 
 ``` php
-use Http\Adapter\Guzzle7\Client;
+use Symfony\Component\HttpClient\Psr18Client;
 
-$service->setClient(new Client());
+$service->setClient(new Psr18Client());
 ```
 
-Here, I have chosen to use the [Guzzle7](http://docs.guzzlephp.org/en/latest/psr7.html) client but since 
-[Httplug](http://httplug.io/) supports the most popular http clients, you can choose you preferred one instead.
+Here, I have chosen to use the [HttpClient](https://github.com/symfony/http-client) client, which is probably already 
+available within your project. But since this bundle is built around the [PSR-17](https://www.php-fig.org/psr/psr-17/) 
+and [PSR-18](https://www.php-fig.org/psr/psr-18/) specifications, any library which supports these specifications can 
+be used within this bundle.
 
 ## Configure http plugins
 
@@ -24,6 +26,19 @@ as a better experience with the library. The following are the most interesting 
  - Google Error Plugin: Convert Google invalid responses to exceptions.
  - Retry Plugin: Retry an error responses (exceptions).
  - Cache Plugin: Cache responses using a [PSR-6](http://www.php-fig.org/psr/psr-6/) compliant cache system.
+
+To be able to use the plugins, you need to install [Httplug Bundle](https://packagist.org/packages/php-http/httplug-bundle) 
+and configure them like:
+
+``` yaml
+httplug:
+    classes:
+        client: Symfony\Component\HttpClient\Psr18Client
+        message_factory: Nyholm\Psr7\Factory\Psr17Factory
+    clients:
+        acme:
+            factory: Symfony\Component\HttpClient\Psr18Client
+```
 
 To use these plugins, first install them:
 
@@ -37,21 +52,21 @@ Here, I have chosen to use the Symfony Cache PSR-6 component but you can choose 
 Then, create a plugin client:
 
 ``` php
-use Http\Adapter\Guzzle7\Client;
 use Http\Client\Common\Plugin\CachePlugin;
 use Http\Client\Common\Plugin\ErrorPlugin as HttpErrorPlugin;
 use Http\Client\Common\Plugin\RetryPlugin;
-use Http\Message\StreamFactory\GuzzleStreamFactory;
 use Ivory\GoogleMap\Service\Plugin\ErrorPlugin as GoogleErrorPlugin;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\HttpClient\Psr18Client;
 
-$service->setClient(new PluginClient(new Client(), [
+$service->setClient(new PluginClient(new Psr18Client(), [
     new RetryPlugin(),
     new HttpErrorPlugin(),
     new GoogleErrorPlugin(),
     new CachePlugin(
         new FilesystemAdapter(__DIR__.'/cache'),
-        new GuzzleStreamFactory(),
+        new Psr17Factory(),
         [
             'cache_lifetime'        => null,
             'default_ttl'           => null,
@@ -64,18 +79,19 @@ $service->setClient(new PluginClient(new Client(), [
 In this example, we use the `FilesystemAdapter` as well as an infinite caching strategy but you can configure it 
 according to your needs. 
 
-## Configure message factory
+## Configure request factory
 
-If you want to update the message factory, you can use:
+If you want to update the request factory, you can use:
 
 ``` php
-use Http\Message\MessageFactory\GuzzleMessageFactory;
+use Nyholm\Psr7\Factory\Psr17Factory;
 
-$service->setMessageFactory(new GuzzleMessageFactory());
+$service->setRequestFactory(new Psr17Factory());
 ```
 
-Here, I have chosen to use the [Guzzle7](http://docs.guzzlephp.org/en/latest/psr7.html) message factory but since 
-[Httplug](http://httplug.io/) supports the most popular http clients, you can choose you preferred one instead.
+Here, I have chosen to use the [Psr7](https://github.com/Nyholm/psr7) request factory. But since this bundle is built 
+around the [PSR-17](https://www.php-fig.org/psr/psr-17/) and [PSR-18](https://www.php-fig.org/psr/psr-18/) 
+specifications, any library which supports these specifications can be used within this bundle.
 
 ## Configure serializer
 

@@ -11,37 +11,22 @@
 
 namespace Ivory\Tests\GoogleMap\Service;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractHttpService;
 use Ivory\GoogleMap\Service\AbstractService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
  */
 class HttpServiceTest extends TestCase
 {
-    /**
-     * @var AbstractHttpService|MockObject
-     */
-    private $service;
-
-    /**
-     * @var string
-     */
-    private $url;
-
-    /**
-     * @var HttpClient|MockObject
-     */
-    private $client;
-
-    /**
-     * @var MessageFactory|MockObject
-     */
-    private $messageFactory;
+    private MockObject|AbstractHttpService $service;
+    private string $url;
+    private ClientInterface|MockObject $client;
+    private MockObject|RequestFactoryInterface $requestFactory;
 
     /**
      * {@inheritdoc}
@@ -52,7 +37,7 @@ class HttpServiceTest extends TestCase
             ->setConstructorArgs([
                 $this->url = 'https://foo',
                 $this->client = $this->createHttpClientMock(),
-                $this->messageFactory = $this->createMessageFactoryMock(),
+                $this->requestFactory = $this->createRequestFactoryMock(),
             ])
             ->getMockForAbstractClass();
     }
@@ -62,7 +47,7 @@ class HttpServiceTest extends TestCase
         $this->assertInstanceOf(AbstractService::class, $this->service);
         $this->assertSame('https://foo', $this->service->getUrl());
         $this->assertSame($this->client, $this->service->getClient());
-        $this->assertSame($this->messageFactory, $this->service->getMessageFactory());
+        $this->assertSame($this->requestFactory, $this->service->getRequestFactory());
     }
 
     public function testClient()
@@ -72,26 +57,20 @@ class HttpServiceTest extends TestCase
         $this->assertSame($client, $this->service->getClient());
     }
 
-    public function testMessageFactory()
+    public function testRequestFactory()
     {
-        $this->service->setMessageFactory($messageFactory = $this->createMessageFactoryMock());
+        $this->service->setRequestFactory($requestFactory = $this->createRequestFactoryMock());
 
-        $this->assertSame($messageFactory, $this->service->getMessageFactory());
+        $this->assertSame($requestFactory, $this->service->getRequestFactory());
     }
 
-    /**
-     * @return MockObject|HttpClient
-     */
-    private function createHttpClientMock()
+    private function createHttpClientMock(): ClientInterface|MockObject
     {
-        return $this->createMock(HttpClient::class);
+        return $this->createMock(ClientInterface::class);
     }
 
-    /**
-     * @return MockObject|MessageFactory
-     */
-    private function createMessageFactoryMock()
+    private function createRequestFactoryMock(): RequestFactoryInterface|MockObject
     {
-        return $this->createMock(MessageFactory::class);
+        return $this->createMock(RequestFactoryInterface::class);
     }
 }

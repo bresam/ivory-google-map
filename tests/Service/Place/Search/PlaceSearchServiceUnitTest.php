@@ -36,7 +36,7 @@ class PlaceSearchServiceUnitTest extends AbstractUnitService
 
         $this->service = new PlaceSearchService(
             $this->client,
-            $this->messageFactory,
+            $this->requestFactory,
             $this->serializer
         );
     }
@@ -56,7 +56,7 @@ class PlaceSearchServiceUnitTest extends AbstractUnitService
 
         $url = 'https://maps.googleapis.com/maps/api/place/'.$context.'/json?foo=bar&signature=signature';
 
-        $this->messageFactory
+        $this->requestFactory
             ->expects($this->once())
             ->method('createRequest')
             ->with(

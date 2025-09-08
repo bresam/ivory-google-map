@@ -11,13 +11,8 @@
 
 namespace Ivory\Tests\GoogleMap\Helper\Functional;
 
-use Http\Adapter\Guzzle7\Client;
 use Http\Client\Common\Plugin\CachePlugin;
 use Http\Client\Common\PluginClient;
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
-use Http\Message\MessageFactory\GuzzleMessageFactory;
-use Http\Message\StreamFactory\GuzzleStreamFactory;
 use Ivory\GoogleMap\Base\Coordinate;
 use Ivory\GoogleMap\Base\Point;
 use Ivory\GoogleMap\Helper\Builder\StaticMapHelperBuilder;
@@ -28,9 +23,14 @@ use Ivory\GoogleMap\Overlay\EncodedPolyline;
 use Ivory\GoogleMap\Overlay\Icon;
 use Ivory\GoogleMap\Overlay\Marker;
 use Ivory\GoogleMap\Overlay\Polyline;
+use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Psr18Client;
 
 /**
  * @author GeLo <geloen.eric@gmail.com>
@@ -45,14 +45,14 @@ class StaticMapFunctionalTest extends TestCase
     private $staticMapHelper;
 
     /**
-     * @var HttpClient
+     * @var ClientInterface
      */
     private $client;
 
     /**
-     * @var MessageFactory
+     * @var RequestFactoryInterface
      */
-    private $messageFactory;
+    private $requestFactory;
 
     /**
      * @var CacheItemPoolInterface
@@ -75,12 +75,12 @@ class StaticMapFunctionalTest extends TestCase
         $this->staticMapHelper = $this->createStaticMapHelper();
 
         $this->pool = new FilesystemAdapter('', 0, $_SERVER['CACHE_PATH']);
-        $this->messageFactory = new GuzzleMessageFactory();
+        $this->requestFactory = new Psr17Factory();
 
-        $this->client = new PluginClient(new Client(), [
+        $this->client = new PluginClient(new Psr18Client(new MockHttpClient()), [
             new CachePlugin(
                 $this->pool,
-                new GuzzleStreamFactory(),
+                $this->requestFactory,
                 [
                     'cache_lifetime'                    => null,
                     'default_ttl'                       => null,
@@ -419,7 +419,7 @@ class StaticMapFunctionalTest extends TestCase
 
     private function renderMap(Map $map)
     {
-        $request = $this->messageFactory->createRequest('GET', $this->staticMapHelper->render($map));
+        $request = $this->requestFactory->createRequest('GET', $this->staticMapHelper->render($map));
         $response = $this->client->sendRequest($request);
 
         $this->assertSame(200, $response->getStatusCode());

@@ -36,7 +36,7 @@ class TimeZoneServiceUnitTest extends AbstractUnitService
 
         $this->service = new TimeZoneService(
             $this->client,
-            $this->messageFactory,
+            $this->requestFactory,
             $this->serializer
         );
     }
@@ -51,7 +51,7 @@ class TimeZoneServiceUnitTest extends AbstractUnitService
 
         $url = 'https://maps.googleapis.com/maps/api/timezone/json?foo=bar&signature=signature';
 
-        $this->messageFactory
+        $this->requestFactory
             ->expects($this->once())
             ->method('createRequest')
             ->with(

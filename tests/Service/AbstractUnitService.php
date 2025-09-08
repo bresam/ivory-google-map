@@ -11,11 +11,11 @@
 
 namespace Ivory\Tests\GoogleMap\Service;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\BusinessAccount;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -26,20 +26,11 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 abstract class AbstractUnitService extends TestCase
 {
-    /**
-     * @var HttpClient|MockObject
-     */
-    protected $client;
+    protected ClientInterface|MockObject $client;
 
-    /**
-     * @var MessageFactory|MockObject
-     */
-    protected $messageFactory;
+    protected MockObject|RequestFactoryInterface $requestFactory;
 
-    /**
-     * @var SerializerInterface|MockObject
-     */
-    protected $serializer;
+    protected MockObject|SerializerInterface $serializer;
 
     /**
      * {@inheritdoc}
@@ -47,62 +38,41 @@ abstract class AbstractUnitService extends TestCase
     protected function setUp(): void
     {
         $this->client = $this->createHttpClientMock();
-        $this->messageFactory = $this->createMessageFactoryMock();
+        $this->requestFactory = $this->createRequestFactoryMock();
         $this->serializer = $this->createSerializerMock();
     }
 
-    /**
-     * @return MockObject|HttpClient
-     */
-    protected function createHttpClientMock()
+    protected function createHttpClientMock(): MockObject|ClientInterface
     {
-        return $this->createMock(HttpClient::class);
+        return $this->createMock(ClientInterface::class);
     }
 
-    /**
-     * @return MockObject|MessageFactory
-     */
-    protected function createMessageFactoryMock()
+    protected function createRequestFactoryMock(): RequestFactoryInterface|MockObject
     {
-        return $this->createMock(MessageFactory::class);
+        return $this->createMock(RequestFactoryInterface::class);
     }
 
-    /**
-     * @return MockObject|SerializerInterface
-     */
-    protected function createSerializerMock()
+    protected function createSerializerMock(): SerializerInterface|MockObject
     {
         return $this->createMock(SerializerInterface::class);
     }
 
-    /**
-     * @return MockObject|RequestInterface
-     */
-    protected function createHttpRequestMock()
+    protected function createHttpRequestMock(): RequestInterface|MockObject
     {
         return $this->createMock(RequestInterface::class);
     }
 
-    /**
-     * @return MockObject|ResponseInterface
-     */
-    protected function createHttpResponseMock()
+    protected function createHttpResponseMock(): ResponseInterface|MockObject
     {
         return $this->createMock(ResponseInterface::class);
     }
 
-    /**
-     * @return MockObject|StreamInterface
-     */
-    protected function createHttpStreamMock()
+    protected function createHttpStreamMock(): StreamInterface|MockObject
     {
         return $this->createMock(StreamInterface::class);
     }
 
-    /**
-     * @return MockObject|BusinessAccount
-     */
-    protected function createBusinessAccountMock()
+    protected function createBusinessAccountMock(): MockObject|BusinessAccount
     {
         return $this->createMock(BusinessAccount::class);
     }

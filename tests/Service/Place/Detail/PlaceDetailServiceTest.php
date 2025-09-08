@@ -40,7 +40,7 @@ class PlaceDetailServiceTest extends AbstractPlaceSerializableService
 
         parent::setUp();
 
-        $this->service = new PlaceDetailService($this->client, $this->messageFactory);
+        $this->service = new PlaceDetailService($this->client, $this->requestFactory);
         $this->service->setKey($_SERVER['API_KEY']);
     }
 

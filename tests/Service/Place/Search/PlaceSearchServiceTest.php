@@ -51,7 +51,7 @@ class PlaceSearchServiceTest extends AbstractPlaceSerializableService
             sleep(5);
         }
 
-        $this->service = new PlaceSearchService($this->client, $this->messageFactory);
+        $this->service = new PlaceSearchService($this->client, $this->requestFactory);
         $this->service->setKey($_SERVER['API_KEY']);
     }
 

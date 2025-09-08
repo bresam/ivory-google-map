@@ -11,13 +11,13 @@
 
 namespace Ivory\Tests\GoogleMap\Service;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 use Ivory\GoogleMap\Service\AbstractHttpService;
 use Ivory\GoogleMap\Service\AbstractSerializableService;
 use Ivory\GoogleMap\Service\BusinessAccount;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -25,30 +25,15 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class SerializableServiceTest extends TestCase
 {
-    /**
-     * @var AbstractSerializableService|MockObject
-     */
-    private $service;
+    private AbstractSerializableService|MockObject $service;
 
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
-    /**
-     * @var HttpClient|MockObject
-     */
-    private $client;
+    private ClientInterface|MockObject $client;
 
-    /**
-     * @var MessageFactory|MockObject
-     */
-    private $messageFactory;
+    private MockObject|RequestFactoryInterface $requestFactory;
 
-    /**
-     * @var SerializerInterface|MockObject
-     */
-    private $serializer;
+    private MockObject|SerializerInterface $serializer;
 
     /**
      * {@inheritdoc}
@@ -59,7 +44,7 @@ class SerializableServiceTest extends TestCase
             ->setConstructorArgs([
                 $this->url = 'https://foo',
                 $this->client = $this->createHttpClientMock(),
-                $this->messageFactory = $this->createMessageFactoryMock(),
+                $this->requestFactory = $this->createRequestFactoryMock(),
                 $this->serializer = $this->createSerializerMock(),
             ])
             ->getMockForAbstractClass();
@@ -74,7 +59,7 @@ class SerializableServiceTest extends TestCase
     {
         $this->assertSame('https://foo', $this->service->getUrl());
         $this->assertSame($this->client, $this->service->getClient());
-        $this->assertSame($this->messageFactory, $this->service->getMessageFactory());
+        $this->assertSame($this->requestFactory, $this->service->getRequestFactory());
         $this->assertSame($this->serializer, $this->service->getSerializer());
         $this->assertFalse($this->service->hasKey());
         $this->assertNull($this->service->getKey());
@@ -94,11 +79,11 @@ class SerializableServiceTest extends TestCase
         $this->assertSame($client, $this->service->getClient());
     }
 
-    public function testMessageFactory()
+    public function testRequestFactory()
     {
-        $this->service->setMessageFactory($messageFactory = $this->createMessageFactoryMock());
+        $this->service->setRequestFactory($requestFactory = $this->createRequestFactoryMock());
 
-        $this->assertSame($messageFactory, $this->service->getMessageFactory());
+        $this->assertSame($requestFactory, $this->service->getRequestFactory());
     }
 
     public function testSerializer()
@@ -142,34 +127,22 @@ class SerializableServiceTest extends TestCase
         $this->assertNull($this->service->getBusinessAccount());
     }
 
-    /**
-     * @return MockObject|HttpClient
-     */
-    private function createHttpClientMock()
+    private function createHttpClientMock(): MockObject|ClientInterface
     {
-        return $this->createMock(HttpClient::class);
+        return $this->createMock(ClientInterface::class);
     }
 
-    /**
-     * @return MockObject|MessageFactory
-     */
-    private function createMessageFactoryMock()
+    private function createRequestFactoryMock(): RequestFactoryInterface|MockObject
     {
-        return $this->createMock(MessageFactory::class);
+        return $this->createMock(RequestFactoryInterface::class);
     }
 
-    /**
-     * @return MockObject|SerializerInterface
-     */
-    private function createSerializerMock()
+    private function createSerializerMock(): SerializerInterface|MockObject
     {
         return $this->createMock(SerializerInterface::class);
     }
 
-    /**
-     * @return MockObject|BusinessAccount
-     */
-    private function createBusinessAccountMock()
+    private function createBusinessAccountMock(): MockObject|BusinessAccount
     {
         return $this->createMock(BusinessAccount::class);
     }

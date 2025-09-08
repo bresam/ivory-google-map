@@ -11,61 +11,45 @@
 
 namespace Ivory\GoogleMap\Service;
 
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface as PsrRequestInterface;
 
-/**
- * @author GeLo <geloen.eric@gmail.com>
- */
 abstract class AbstractHttpService extends AbstractService
 {
-    private HttpClient $client;
-    private MessageFactory $messageFactory;
+    private ClientInterface $client;
+    private RequestFactoryInterface $requestFactory;
 
-    public function __construct(string $url, HttpClient $client, MessageFactory $messageFactory)
+    public function __construct(string $url, ClientInterface $client, RequestFactoryInterface $requestFactory)
     {
         parent::__construct($url);
 
         $this->setClient($client);
-        $this->setMessageFactory($messageFactory);
+        $this->setRequestFactory($requestFactory);
     }
 
-    /**
-     * @return HttpClient
-     */
-    public function getClient()
+    public function getClient(): ClientInterface
     {
         return $this->client;
     }
-    /**
-     * @return void
-     */
-    public function setClient(HttpClient $client)
+
+    public function setClient(ClientInterface $client): void
     {
         $this->client = $client;
     }
 
-    /**
-     * @return MessageFactory
-     */
-    public function getMessageFactory()
+    public function getRequestFactory(): RequestFactoryInterface
     {
-        return $this->messageFactory;
-    }
-    /**
-     * @return void
-     */
-    public function setMessageFactory(MessageFactory $messageFactory)
-    {
-        $this->messageFactory = $messageFactory;
+        return $this->requestFactory;
     }
 
-    /**
-     * @return PsrRequestInterface
-     */
-    protected function createRequest(RequestInterface $request)
+    public function setRequestFactory(RequestFactoryInterface $requestFactory): void
     {
-        return $this->messageFactory->createRequest('GET', $this->createUrl($request));
+        $this->requestFactory = $requestFactory;
+    }
+
+    protected function createRequest(RequestInterface $request): PsrRequestInterface
+    {
+        return $this->requestFactory->createRequest('GET', $this->createUrl($request));
     }
 }
